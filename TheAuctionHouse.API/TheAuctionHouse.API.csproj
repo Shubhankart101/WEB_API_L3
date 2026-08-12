@@ -1,0 +1,22 @@
+<Project Sdk="Microsoft.NET.Sdk.Web">
+
+  <ItemGroup>
+    <ProjectReference Include="..\TheAuctionHouse.Domain.Services\TheAuctionHouse.Domain.Services.csproj" />
+    <ProjectReference Include="..\TheAuctionHouse.Domain.ServiceContracts\TheAuctionHouse.Domain.ServiceContracts.csproj" />
+    <ProjectReference Include="..\TheAuctionHouse.Data.EFCore.InMemory\TheAuctionHouse.Data.EFCore.InMemory.csproj" />
+    <ProjectReference Include="..\TheAuctionHouse.Common\TheAuctionHouse.Common.csproj" />
+    <ProjectReference Include="..\TheAuctionHouse.Data.EFCore.SQLite\TheAuctionHouse.Data.EFCore.SQLite.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Microsoft.AspNetCore.Authentication.JwtBearer" Version="9.0.5" />
+    <PackageReference Include="Swashbuckle.AspNetCore" Version="10.2.3" />
+  </ItemGroup>
+
+  <PropertyGroup>
+    <TargetFramework>net9.0</TargetFramework>
+    <Nullable>enable</Nullable>
+    <ImplicitUsings>enable</ImplicitUsings>
+  </PropertyGroup>
+
+</Project>
