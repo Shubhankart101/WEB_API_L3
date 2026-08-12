@@ -1,7 +1,8 @@
 var builder = WebApplication.CreateBuilder(args);
 var app = builder.Build();
 
-var apiKey = app.Configuration["ServiceAuth:ApiKey"] ?? "email-service-api-key-2025";
+var apiKey = app.Configuration["ServiceAuth:ApiKey"]
+    ?? throw new InvalidOperationException("Missing required configuration value: ServiceAuth:ApiKey");
 
 app.MapPost("/api/email/send", (SendEmailRequest request, HttpContext ctx) =>
 {

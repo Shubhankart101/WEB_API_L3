@@ -17,12 +17,26 @@ public class PortalUserService : IPortalUserService
     private IAppUnitOfWork _appUnitOfWork;
     private IEmailService _emailService;
     private readonly string _jwtKey;
+    private readonly string _jwtIssuer;
+    private readonly string _jwtAudience;
 
-    public PortalUserService(IAppUnitOfWork appUnitOfWork, IEmailService emailService, string jwtKey)
+    public PortalUserService(
+        IAppUnitOfWork appUnitOfWork,
+        IEmailService emailService,
+        string jwtKey,
+        string jwtIssuer,
+        string jwtAudience)
     {
         _appUnitOfWork = appUnitOfWork;
         _emailService = emailService;
         _jwtKey = jwtKey;
+        _jwtIssuer = jwtIssuer;
+        _jwtAudience = jwtAudience;
+    }
+
+    public PortalUserService(IAppUnitOfWork appUnitOfWork, IEmailService emailService, string jwtKey)
+        : this(appUnitOfWork, emailService, jwtKey, "test-issuer", "test-audience")
+    {
     }
 
     private static string HashPassword(string password)
@@ -81,6 +95,8 @@ public class PortalUserService : IPortalUserService
                 new Claim(ClaimTypes.NameIdentifier, user.Id.ToString()),
                 new Claim(ClaimTypes.Email, user.EmailId)
             }),
+            Issuer = _jwtIssuer,
+            Audience = _jwtAudience,
             Expires = DateTime.UtcNow.AddHours(8),
             SigningCredentials = new SigningCredentials(new SymmetricSecurityKey(key), SecurityAlgorithms.HmacSha256Signature)
         };

@@ -12,7 +12,15 @@ var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
-var jwtKey = builder.Configuration["Jwt:Key"]!;
+static string GetRequiredConfiguration(IConfiguration configuration, string key)
+{
+    return configuration[key]
+        ?? throw new InvalidOperationException($"Missing required configuration value: {key}");
+}
+
+var jwtKey = GetRequiredConfiguration(builder.Configuration, "Jwt:Key");
+var jwtIssuer = GetRequiredConfiguration(builder.Configuration, "Jwt:Issuer");
+var jwtAudience = GetRequiredConfiguration(builder.Configuration, "Jwt:Audience");
 
 builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
     .AddJwtBearer(opt =>
@@ -21,8 +29,10 @@ builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
         {
             ValidateIssuerSigningKey = true,
             IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(jwtKey)),
-            ValidateIssuer = false,
-            ValidateAudience = false,
+            ValidateIssuer = true,
+            ValidIssuer = jwtIssuer,
+            ValidateAudience = true,
+            ValidAudience = jwtAudience,
             ValidateLifetime = true
         };
     });

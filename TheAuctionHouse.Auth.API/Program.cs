@@ -9,9 +9,17 @@ var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
-var jwtKey = builder.Configuration["Jwt:Key"]!;
-var emailApiBase = builder.Configuration["EmailApi:BaseUrl"]!;
-var emailApiKey = builder.Configuration["EmailApi:ApiKey"]!;
+static string GetRequiredConfiguration(IConfiguration configuration, string key)
+{
+    return configuration[key]
+        ?? throw new InvalidOperationException($"Missing required configuration value: {key}");
+}
+
+var jwtKey = GetRequiredConfiguration(builder.Configuration, "Jwt:Key");
+var jwtIssuer = GetRequiredConfiguration(builder.Configuration, "Jwt:Issuer");
+var jwtAudience = GetRequiredConfiguration(builder.Configuration, "Jwt:Audience");
+var emailApiBase = GetRequiredConfiguration(builder.Configuration, "EmailApi:BaseUrl");
+var emailApiKey = GetRequiredConfiguration(builder.Configuration, "EmailApi:ApiKey");
 
 builder.Services.AddDbContext<AuctionHouseDbContext>(opt =>
     opt.UseSqlite(builder.Configuration.GetConnectionString("AuthDb") ?? "Data Source=auth.db"));
@@ -31,7 +39,9 @@ builder.Services.AddScoped<IPortalUserService>(sp =>
     new PortalUserService(
         sp.GetRequiredService<IAppUnitOfWork>(),
         sp.GetRequiredService<IEmailService>(),
-        jwtKey));
+        jwtKey,
+        jwtIssuer,
+        jwtAudience));
 
 var app = builder.Build();
 
