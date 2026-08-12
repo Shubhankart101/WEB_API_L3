@@ -1,6 +1,15 @@
 @TheAuctionHouse.Email.API_HostAddress = http://localhost:5245
 
-GET {{TheAuctionHouse.Email.API_HostAddress}}/weatherforecast/
+POST {{TheAuctionHouse.Email.API_HostAddress}}/api/email/send
 Accept: application/json
+Content-Type: application/json
+X-Service-ApiKey: email-service-api-key-2025
+
+{
+	"to": "user@example.com",
+	"subject": "Test email",
+	"body": "Hello from API",
+	"isHtml": false
+}
 
 ###

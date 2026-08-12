@@ -1,6 +1,6 @@
 @TheAuctionHouse.API_HostAddress = http://localhost:5051
 
-GET {{TheAuctionHouse.API_HostAddress}}/weatherforecast/
+GET {{TheAuctionHouse.API_HostAddress}}/api/auctions
 Accept: application/json
 
 ###
