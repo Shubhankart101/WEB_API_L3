@@ -27,6 +27,11 @@ TestResults/
 publish/
 out/
 
+# Local runtime databases (SQLite)
+*.db
+*.db-shm
+*.db-wal
+
 # Rider
 .idea/
 
